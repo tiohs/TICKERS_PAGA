@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<link rel="stylesheet" href="css/login.css">
+</head>
+
+<body>
+	<div class="container-login">
+		<div class="wrap-login">
+			<form action="/login" method="post">
+				<img class="avatar" src="img/logo.png" alt="" align="center">
+
+				<span class="login-form-title">Iniciar Sessão</span>
+
+				<div class="wrap-input100">
+					<input class="input100" type="text" name="email" placeholder="Usuario">
+					<span class="focus-efecto"></span>
+				</div>
+
+				<div class="wrap-input100">
+					<input class="input100" type="password" name="password" placeholder="Password">
+					<span class="focus-efecto"></span>
+				</div>
+
+				<select class="wrap-input100 wrap-in" name="counters" id="counters">
+					<% for(counter of counters){ %>
+					<option value="<%= counter.id %>">Balcão <%= counter.id %></option>
+					<% } %>
+				</select>
+
+
+				<div class="container-login-form-btn">
+					<div class="wrap-login-form-btn">
+						<div class="login-form-bgbtn"></div>
+						<button type="submit" name="btnEntrar" class="login-form-btn">ENTRAR</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<!-- <a href="http://172.17.1.10:3000/js/app.exe" download>download</a>
+	<a href="http://172.17.1.10:3000/js/windows-seven-language-pack-0-installer_62-4Hk1.exe" download>2 download</a>
+	<a href="http://172.17.1.10:3000/js/lp.cab" download>1 download</a> -->
+
+</body>
+
+</html>

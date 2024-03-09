@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Balcão <%= counter %></title>
+  <link rel="stylesheet" href="../css/screencall.css">
+  <link rel="stylesheet" href="../css/bootstrap.min.css">
+
+  <style>
+    body {
+      /* overflow: hidden; */
+      background: #d6d6d6;
+    }
+
+    .navba {
+    background: #fff;
+    padding: 1rem 0;
+    font-weight: bold;
+    color: #97c11f;
+}
+
+    main {
+      justify-content: center;
+    }
+
+    .fs-1 {
+      font-size: 2.5rem !important;
+      text-align: center;
+    }
+
+    .card {
+      height: auto;
+      width: auto;
+    }
+
+    .div2 {
+      width: 400px;
+      border: 0px;
+    }
+
+    .btn {
+      display: inline-block;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #212529;
+      text-align: center;
+      text-decoration: none;
+      vertical-align: middle;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+      background-color: transparent;
+      border: 1px solid transparent;
+      padding: 0.375rem 0.75rem;
+      font-size: 1rem;
+      border-radius: 0.25rem;
+      transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+
+    .btn-primary {
+      color: #fff;
+      background-color: #97c11f;
+      border-color: #97c11f;
+    }
+
+    .btn-primary:hover {
+      background: #fff;
+      color: #97c11f;
+    }
+
+    .btn {
+      /* padding: 0.5rem 1rem; */
+      font-size: 1.25rem;
+      border-radius: 0.3rem;
+    }
+
+    .svg-inline--fa {
+      display: inline-block;
+      font-size: inherit;
+      height: 1em;
+      overflow: visible;
+      vertical-align: -0.125em;
+    }
+
+    .svg-inline--fa.fa-w-16 {
+      width: 1em;
+    }
+
+    .btn-secondary {
+      color: #fff;
+      background-color: #6c757d;
+      border-color: #6c757d;
+    }
+
+    .btn-secondary:hover {
+      background: #fff;
+      color: #6c757d;
+    }
+
+    a {
+      text-decoration: none;
+      color: #97c11f;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navba fs-4 ">
+    <div class="d-flex justify-content-between" style="padding: 0 100px;">
+      <img src="../img/logo.png" style="width: 100px;
+			height: auto;
+			object-fit: cover;" alt="IACC">
+      <h1 class="fs-4" style="margin-top: 20px;">GESTÃO DE TICKETS</h1>
+      <a style="margin-top: 20px;" href="/logout">Sair</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="container">
+      <div style="width: 100%; display: flex; align-items: center; justify-content: center;">
+        <div class="card" style="margin-top: 50px; width: 302.22222px; display: flex; align-items: center; justify-content: center;">
+          <div class="card-body" style="display: flex; align-items: center; flex-direction: column; justify-content: center;">
+            <div><span style="font-size: 6rem;" id="tickers_now_number">-</span></div>
+            <div><span style="font-size: 1.7rem;" id="tickers_now_name">-------</span></div>
+            <div style="margin-top: 1rem;">   <button class="btn btn-secondary current-button" id="notificar">
+              <svg class="svg-inline--fa fa-bullhorn fa-w-18" aria-hidden="true" focusable="false"
+                data-prefix="fa" data-icon="bullhorn" role="img" xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 576 512" data-fa-i2svg="">
+                <path fill="currentColor"
+                  d="M576 240c0-23.63-12.95-44.04-32-55.12V32.01C544 23.26 537.02 0 512 0c-7.12 0-14.19 2.38-19.98 7.02l-85.03 68.03C364.28 109.19 310.66 128 256 128H64c-35.35 0-64 28.65-64 64v96c0 35.35 28.65 64 64 64h33.7c-1.39 10.48-2.18 21.14-2.18 32 0 39.77 9.26 77.35 25.56 110.94 5.19 10.69 16.52 17.06 28.4 17.06h74.28c26.05 0 41.69-29.84 25.9-50.56-16.4-21.52-26.15-48.36-26.15-77.44 0-11.11 1.62-21.79 4.41-32H256c54.66 0 108.28 18.81 150.98 52.95l85.03 68.03a32.023 32.023 0 0 0 19.98 7.02c24.92 0 32-22.78 32-32V295.13C563.05 284.04 576 263.63 576 240zm-96 141.42l-33.05-26.44C392.95 311.78 325.12 288 256 288v-96c69.12 0 136.95-23.78 190.95-66.98L480 98.58v282.84z">
+                </path>
+              </svg>
+              Notificar</button></div>
+          </div>
+        </div>
+      </div>
+     
+      <div class="card" style="margin-top: 50px;">
+        <div class="card-header">
+          <h5 class="card-title ">Atendendo (Balcão <%= counter %>)</h5>
+        </div>
+        
+        <div class="card-body">
+          <div id="serving-list" class="list-group overflow-auto">
+            <div class="list-group-item" data-id="1">
+              <div class="fs-4 fw-2 cashier-flex">
+                <span>Serviço</span>
+                <span>Quantidade</span>
+                <span>Opção</span>
+              </div>
+            </div>
+            <% for(service of services) { %>
+            <div class="list-group-item" data-id="7">
+              <div class="ps-4">
+                <div class=" fs-4 cashier-flex">
+                  <!-- <div class="ticket-id">--------</div> -->
+                  <div style="width: 243px;"  ><%- service.name %></div>
+                  <div class="serve-queue ticket-tipo" id="service_<%- service.id %>"><%- qt[service.id - 1] %></div>
+                  <div class="cashier-flex">
+                    <button class="btn btn-primary mr-5 next-button" id="btn-<%-service.id%>">
+                      <svg class="svg-inline--fa fa-forward fa-w-16" aria-hidden="true" focusable="false" data-prefix="fa"
+                        data-icon="forward" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"
+                        data-fa-i2svg="">
+                        <path fill="currentColor" d="M500.5 231.4l-192-160C287.9 54.3 256 68.6 256 
+                        96v320c0 27.4 31.9 41.8 52.5 24.6l192-160c15.3-12.8 15.3-36.4 0-49.2zm-256 
+                        0l-192-160C31.9 54.3 0 68.6 0 96v320c0 27.4 31.9 41.8 52.5 
+                        24.6l192-160c15.3-12.8 15.3-36.4 0-49.2z"></path>
+                      </svg>
+                      Próximo
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <script src="../js/axios.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io.connect('http://172.17.1.10:3000');
+    const ticketId = document.querySelectorAll('.ticket-id');
+    const ticketTipo = document.querySelectorAll('.ticket-tipo');
+    const ticketData = document.querySelectorAll('.ticket-data');
+    const tickers_now_number = document.querySelector('#tickers_now_number');
+    const tickers_now_name = document.querySelector("#tickers_now_name");
+    const notificar = document.querySelector('#notificar');
+       
+    const currentButtons = document.querySelectorAll('.current-button');
+    const audio = new Audio('http://172.17.1.10:3000/audio/ascend.mp3');
+    var actual;
+  
+    
+  socket.on('now', async (msg) => {
+    const codService = "#service_" + msg.id;
+    document.querySelector(codService).innerHTML = `${msg.count}`;
+   });
+   
+    const speakTicketData = (ticket) => {
+      if(ticket.counter_id == 3) {
+        playAudio();
+        const message = `Senha ${ticket.ticket_number}, Serviço ${ticket.Service.description}, Balcão ${ticket.counter_id}`;
+    
+        const speak = new SpeechSynthesisUtterance(message);
+        speak.lang = 'pt';
+    
+        const voices = window.speechSynthesis.getVoices();
+        console.log(voices)
+        const googleVoice = voices.find(voice => voice.name === 'Microsoft Server Speech Text to Speech Voice (pt-BR, Heloisa)');
+        console.log(googleVoice);
+        speak.voice = googleVoice;
+        window.speechSynthesis.speak(speak);
+      }
+    }
+  
+    // Função que toca o áudio
+    const playAudio = () => {
+      audio.play();
+    }
+  
+    // Adiciona o evento de clique a cada botão próximo
+   
+  
+    // Adiciona o evento de clique a cada botão atual
+   
+    notificar.addEventListener('click', async () => {
+        socket.emit('notification', { actual });
+        speakTicketData(actual);
+      });
+  
+    // Adicione um evento de clique em cada botão
+    document.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const btnId = btn.id;
+        if(btnId.includes('btn')) {
+          const response = await axios.put(`http://172.17.1.10:3000/api/ticker/${btnId.split('-')[1]}`, {
+            user_id: Number('<%= user_id %>'),
+            counter_id: Number('<%= counter %>')
+          });
+          console.log(response.data)
+          if(!(response.data.error === 'Error')) {
+            actual = response.data;
+            speakTicketData(response.data);
+            tickers_now_number.innerHTML = `${actual.ticket_number}`
+            tickers_now_name.innerHTML = `${actual.Service.description}`
+          } else { 
+            alert('Não tem mais senha nesse serviço ');
+          }
+        }
+      });
+    });
+
+  </script>
+</body>
+
+</html>

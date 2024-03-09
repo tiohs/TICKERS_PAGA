@@ -1,0 +1,109 @@
+@import url('../font/Roboto-Regular.ttf');
+
+*{
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    /* height: 100%; */
+    display: flex;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    position: relative;
+    margin: auto;
+    background: #d6d6d6;
+    perspective: 500px;
+    max-height: 100vh;
+}
+
+header{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    /* transform: rotatex(10deg); */
+    animation: rotateAngle 6s linear infinite;
+    height: 70vh;
+    justify-content: center;
+}
+
+
+button {
+    display: block;
+    position: relative;
+    margin: 0.5em 0;
+    padding: 0.8em 2.2em;
+    cursor: pointer;
+    background: #27701e;
+    border: none;
+    border-radius: 0.4em;
+    text-transform: uppercase;
+    font-size: 1.4em;
+    font-family: "Work Sans", sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    mix-blend-mode: color-dodge;
+    perspective: 500px;
+    transform-style: preserve-3d;
+    color: #fff;
+}
+button:before, button:after {
+    --z: 0px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    content: '';
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    mix-blend-mode: inherit;
+    border-radius: inherit;
+    transform-style: preserve-3d;
+    transform: translate3d(calc(var(--z) * 0px), calc(var(--z) * 0px), calc(var(--z) * 0px));
+}
+button span {
+    mix-blend-mode: none;
+    display: block;
+}
+button:after {
+    background-color: #5d00ff;
+}
+button:before {
+    background-color: #ff1731;
+}
+button:hover {
+
+    transition: background 0.3s 0.1s;
+}
+button:hover:before {
+    --z: 0.04;
+    animation: translateWobble 2.2s ease forwards;
+}
+button:hover:after {
+    --z: -0.06;
+    animation: translateWobble 2.2s ease forwards;
+}
+
+h2{
+    text-align: center;
+}
+
+footer{
+    margin-top: 3rem;
+}
+
+div h2 {
+    font-family: 'roboto', sans-serif;
+    font-size: 1.5rem;
+    line-height: 1.6;
+    font-weight: 400;
+}

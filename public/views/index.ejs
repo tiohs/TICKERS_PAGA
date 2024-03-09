@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IACC tickect</title>
+    <link rel="stylesheet" href="css/style.css" />
+
+    <style>
+      button{
+        font-size: 2.5rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <img src="img/logo.png" alt="IACC" width="250px" height="auto" />
+      </header>
+      <main>
+        <div class="">
+          <!-- <h2>Serviços IACC</h2> -->
+        </div>
+        <% for(service of services){ %>
+          <%if(!!service.status){%>
+          <button class="service-button" data-id="<%- service.id %>" ><%- service.id %> - <%- service.name %></button>
+          <%}%>
+        <% } %>
+      </main>
+      <footer>
+        <h3 style="text-align: center;">
+          Mhbinda-Tickets - &copy; copyright-Muhende <%- `${new Date().getFullYear()}` %>
+        </h3>
+      </footer>
+    </div>
+  </body>
+  <script src="./js/axios.js"></script>
+  <script> 
+
+    // Seletor para todos os botões de serviço
+  const serviceButtons = document.querySelectorAll('.service-button');
+
+  const postTicketData = async (number_tickers) => {
+      const service = await axios.post('http://172.17.1.14:3000/api/ticker', {
+       service_id: Number(number_tickers)
+     }, 
+     {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+  );
+
+  if(service.data.hasOwnProperty('error')) {
+    return alert(service.data.error)
+  }
+
+  const data = new Date();
+  const dia = data.getDate().toString().padStart(1, '0');
+  const mes = (data.getMonth() + 1).toString().padStart(1, '0');
+  const ano = data.getFullYear();
+  const hora = data.getHours().toString().padStart(2, '0');
+  const minutos = data.getMinutes().toString().padStart(2, '0');
+  const dataFomatada = `${dia}/${mes}/${ano} ás ${hora}:${minutos}`;
+     
+ const state = await axios.post('http://172.17.1.11:4000/print', {
+     number_id: Number(service.data.ticker.ticket_number),
+       services_tickers: service.data.service,
+       data: dataFomatada
+    }, 
+      {
+        
+       headers: {
+         'Content-Type': 'application/json'
+       }
+     }
+   );
+};
+
+// Adiciona um ouvinte de eventos para cada botão de serviço
+  serviceButtons.forEach(button => {
+    button.addEventListener('click', (event) => {
+    
+      const serviceId = button.dataset.id;
+      postTicketData(serviceId);
+      
+    });
+});
+  </script> 
+</html>

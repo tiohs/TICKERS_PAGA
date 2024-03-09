@@ -1,0 +1,7 @@
+BD_NAME=tickers
+BD_HOST=localhost
+BD_USER=root
+BD_PASSWORD=root
+BD_PORT=3306
+
+HOST=localhost
