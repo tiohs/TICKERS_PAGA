@@ -122,8 +122,9 @@
 					<tr>
 						<th scope="col">#</th>
 						<th scope="col">Nome</th>
-						<th scope="col">Descrição</th>
+						
 						<th scope="col">Status</th>
+						<th scope="col">Sub Serviços</th>
 						<th scope="col">Açcão</th>
 					</tr>
 				</thead>
@@ -132,7 +133,7 @@
 					<tr>
 						<th scope="row"><%- service.id %></th>
 						<td><%- service.name %></td>
-						<td><%- service.description %></td>
+					
 						<td>
 							<label class="container">
 								<input type="checkbox" class="myCheckbox" data-id="<%- service.id %>"  <%- service.status ? 'checked' : '' %> />
@@ -140,16 +141,23 @@
 							   </label>							   
 						</td>
 						<td>
+							<label class="container">
+								<input type="checkbox" class="submyCheckbox" data-id="<%- service.id %>"  <%- service.service_status_submenu ? 'checked' : '' %> />
+								<span class="checkmark"></span>
+							   </label>							   
+						</td>
+						<td>
 							<button type="button" class="btn btn-primary edit-btn" data-toggle="modal" data-target="#editModal"
-								data-service-id="<%- service.id %>">Editar</button>
+								data-service-id="<%- service.id %>">✏️</button>
 							<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
-								Eliminar
+								🗑️
 							</button>
-							<a href="/admin/submenu/<%- service.id %>" class="btn btn-primary edit-btn">
-								Adicionar submenu
+							<% if (service.service_status_submenu) { %>
+							<a href="/admin/submenu/<%- service.id %>" class="btn btn-primary ">
+								🧾
 								<svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="angle-right" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" class="margin-left-sm svg-inline--fa fa-angle-right fa-lg"><path fill="currentColor" d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z" class=""></path></svg>
 							</a>
-							
+							<% } %>
 						</td>
 					</tr>
 					<% } %>
@@ -254,12 +262,13 @@
 
 		// Adicionando um evento de clique ao checkbox
       const check = document.querySelectorAll(".myCheckbox");
+      const subCheck = document.querySelectorAll(".submyCheckbox");
 
 			check.forEach(item => {
 				item.addEventListener("click", function() {
             // Obtendo o estado atual do checkbox
             var isChecked = this.checked;   
-            axios.post(`http://172.17.1.14:3000/service/updated/${item.dataset.id}`, 
+            axios.post(`http://172.22.116.33:3000/service/updated/${item.dataset.id}`, 
 						{ 
 							status: isChecked 
 						})
@@ -272,7 +281,24 @@
                 });
         });
 			})
-
+			subCheck.forEach(item => {
+				item.addEventListener("click", function() {
+            // Obtendo o estado atual do checkbox
+            var isChecked = this.checked;   
+            axios.post(`http://172.22.116.33:3000/service/updated/${item.dataset.id}`, 
+						{ 
+							service_status_submenu: isChecked 
+						})
+                .then(function (response) {
+									location.reload();
+                    console.log(response.data);
+                    // Faça algo com a resposta da API, se necessário
+                })
+                .catch(function (error) {
+                    console.error('Erro ao enviar status para a API:', error);
+                });
+        });
+			})
 			
 
 	</script>

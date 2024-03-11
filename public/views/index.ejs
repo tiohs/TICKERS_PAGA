@@ -1,91 +1,239 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>IACC tickect</title>
-    <link rel="stylesheet" href="css/style.css" />
+<html lang="pt">
 
-    <style>
-      button{
-        font-size: 2.5rem;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <img src="img/logo.png" alt="IACC" width="250px" height="auto" />
-      </header>
-      <main>
-        <div class="">
-          <!-- <h2>Serviços IACC</h2> -->
-        </div>
-        <% for(service of services){ %>
-          <%if(!!service.status){%>
-          <button class="service-button" data-id="<%- service.id %>" ><%- service.id %> - <%- service.name %></button>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IACC tickect</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    button {
+      font-size: 2.5rem;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: auto;
+      background-color: #fff;
+    }
+
+    .modal-dialog {
+      max-width: none;
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    .modal-content {
+      height: 100%;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+      background-color: transparent;
+    }
+
+    .modal-body {
+      padding: 1rem;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: center;
+      /* Centraliza horizontalmente */
+      align-items: center;
+      /* Centraliza verticalmente */
+      padding: 0.75rem;
+      border-top: 1px solid #dee2e6;
+      border-bottom-right-radius: calc(0.3rem - 1px);
+      border-bottom-left-radius: calc(0.3rem - 1px);
+    }
+
+    .modal-header>div {
+      flex: 1;
+      /* Distribui o espaço igualmente entre as divs */
+      display: flex;
+      justify-content: space-between;
+      /* Espaça as divs internamente */
+      align-items: center;
+      /* Alinha os itens verticalmente no centro */
+    }
+    .modal-body {
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <img src="img/logo.png" alt="IACC" width="250px" height="auto" />
+    </header>
+    <main>
+      <div class="">
+        <!-- <h2>Serviços IACC</h2> -->
+      </div>
+      <% for(service of services){ %>
+        <%if(!!service.status){%>
+          <button class="service-button" data-id="<%- service.id %>" data-sub="<%- service.service_status_submenu %>" data-name="<%- service.name %>"><%-
+                  service.id %> - <%- service.name %></button>
           <%}%>
+      <% } %>
+    </main>
+    <footer>
+      <h3 style="text-align: center;">
+        Mhbinda-Tickets - &copy; copyright-Muhende <%- `${new Date().getFullYear()}` %>
+      </h3>
+    </footer>
+
+      <!-- modal -->
+  <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <div>
+          <img src="img/logo.png" alt="IACC" width="100px" height="auto" />
+        </div>
+
+        <div>
+          <h5 class="modal-title" style="text-align: center;" id="exampleModalLabel"><span
+              id="serviceIdSpan" style="font-size: 2rem;"></span></h5>
+        </div>
+        <div>
+          <button type="button" class="close btn btn-secondary" style="color: #fff; background: green;"
+          data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">SAIR &times;</span>
+        </button>
+        </div>
+      </div>
+      <div class="modal-body" style="margin: 0 auto;">
+        <input type="hidden" id="serviceIdInput">
+        <% var x = 0; %>
+        <% for(submenu of subservices){ %>
+          <% x++; %>
+        <button class="submenu-button" data-id="<%- submenu.id %>"
+          data-name="<%- submenu.name %>" data-service_id="<%- submenu.service_id %>"><%- x; %> - <%- submenu.name %></button>
         <% } %>
-      </main>
-      <footer>
-        <h3 style="text-align: center;">
+
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary close-btn" style="color: #fff; background: green;"
+          data-dismiss="modal">Sair</button> -->
+        <h3>
           Mhbinda-Tickets - &copy; copyright-Muhende <%- `${new Date().getFullYear()}` %>
         </h3>
-      </footer>
+      </div>
     </div>
-  </body>
-  <script src="./js/axios.js"></script>
-  <script> 
+  </div>
+</div>
+<!-- Modal -->
 
-    // Seletor para todos os botões de serviço
+  </div>
+
+</body>
+<script src="./js/axios.js"></script>
+<script>
+  // Seletor para todos os botões de serviço
   const serviceButtons = document.querySelectorAll('.service-button');
+  const submenuButtons = document.querySelectorAll('.submenu-button');
 
-  const postTicketData = async (number_tickers) => {
-      const service = await axios.post('http://172.17.1.14:3000/api/ticker', {
-       service_id: Number(number_tickers)
-     }, 
-     {
+  const postTicketData = async (number_tickers, number_ticker_sub = null) => {
+    const service = await axios.post('http://172.17.1.10:3000/api/ticker', {
+      service_id: Number(number_tickers),
+      number_ticker_sub: Number(number_ticker_sub)
+    }, {
       headers: {
         'Content-Type': 'application/json'
       }
+    });
+
+    if (service.data.hasOwnProperty('error')) {
+      return alert(service.data.error)
     }
-  );
 
-  if(service.data.hasOwnProperty('error')) {
-    return alert(service.data.error)
-  }
+    const data = new Date();
+    const dia = data.getDate().toString().padStart(1, '0');
+    const mes = (data.getMonth() + 1).toString().padStart(1, '0');
+    const ano = data.getFullYear();
+    const hora = data.getHours().toString().padStart(2, '0');
+    const minutos = data.getMinutes().toString().padStart(2, '0');
+    const dataFomatada = `${dia}/${mes}/${ano} ás ${hora}:${minutos}`;
 
-  const data = new Date();
-  const dia = data.getDate().toString().padStart(1, '0');
-  const mes = (data.getMonth() + 1).toString().padStart(1, '0');
-  const ano = data.getFullYear();
-  const hora = data.getHours().toString().padStart(2, '0');
-  const minutos = data.getMinutes().toString().padStart(2, '0');
-  const dataFomatada = `${dia}/${mes}/${ano} ás ${hora}:${minutos}`;
-     
- const state = await axios.post('http://172.17.1.11:4000/print', {
-     number_id: Number(service.data.ticker.ticket_number),
-       services_tickers: service.data.service,
-       data: dataFomatada
-    }, 
-      {
-        
-       headers: {
-         'Content-Type': 'application/json'
-       }
-     }
-   );
-};
+    const state = await axios.post('http://172.17.1.11:4000/print', {
+      number_id: Number(service.data.ticker.ticket_number),
+      services_tickers: service.data.service,
+      data: dataFomatada
+    }, {
 
-// Adiciona um ouvinte de eventos para cada botão de serviço
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+  };
+
+  // Adiciona um ouvinte de eventos para cada botão de serviço
   serviceButtons.forEach(button => {
     button.addEventListener('click', (event) => {
-    
-      const serviceId = button.dataset.id;
-      postTicketData(serviceId);
-      
+      if (button.dataset.sub == "true") {
+        const serviceId = button.dataset.id;
+        // Atualize o valor do input hidden e do span na modal
+        document.getElementById('serviceIdInput').value = serviceId;
+        document.getElementById('serviceIdSpan').textContent = button.dataset.name;
+        // Exiba a modal
+        document.getElementById('exampleModal').style.display = 'block';
+        removeSubMenu(serviceId);
+        return;
+      } else {
+        const serviceId = button.dataset.id;
+        console.log('serviço: ', serviceId)
+        postTicketData(serviceId);
+      }
     });
-});
-  </script> 
+  });
+
+  submenuButtons.forEach(button => {
+    button.addEventListener('click', (event) => {
+      const submenuId = button.dataset.id;
+      const serviceId = document.getElementById('serviceIdInput').value;
+      console.log('serviço: ' + serviceId, ' Submenu:' + submenuId);
+      postTicketData(serviceId, submenuId);
+
+      document.getElementById('exampleModal').style.display = 'none';
+    });
+  });
+
+
+  // Adicione um evento de clique ao botão de fechar da modal
+  document.querySelector('.modal-content .close').addEventListener('click', (event) => {
+    // Oculte a modal
+    document.getElementById('exampleModal').style.display = 'none';
+  });
+
+  function removeSubMenu (service_id){
+    console.log(service_id)
+    document.querySelectorAll('.submenu-button').forEach(item => {
+      console.log(item.dataset.service_id)
+      if (Number(item.dataset.service_id) !== Number(service_id)){
+        return item.style.display = 'none';
+      } 
+      return item.style.display = 'block';
+    })
+  }
+</script>
+
 </html>

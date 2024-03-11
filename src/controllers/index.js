@@ -1,10 +1,12 @@
 import { Op } from "sequelize";
 import { Services } from "../models/Services";
+import { Subservices } from "../models/sub_services";
 import { Tickets } from "../models/Tickers";
 export class IndexRenders {
   async indexTela(req, res) {
     const services = await Services.findAll();
-    return res.render('index', { services });
+    const subservices = await Subservices.findAll();
+    return res.render('index', { services, subservices });
   }
   async ticket(req, res){
     const counter = req.session.data.counter;

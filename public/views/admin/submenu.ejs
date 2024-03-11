@@ -115,8 +115,9 @@
 	<main>
 
 		<div class="container" style="padding-top: 100px;">
+			<h2><%- service.name %></h2>
 			<button type="button" class="btn btn-primary mb-5" data-toggle="modal" data-target="#cadastrarModal"
-				data-whatever="@mdo">Cadastrar Submenu de <%- service.name %> </button>
+				data-whatever="@mdo">Cadastrar Submenu  </button>
 			<table class="table" style="background: #fff;">
 				<thead>
 					<tr>
@@ -128,11 +129,11 @@
 					</tr>
 				</thead>
 				<tbody>
-					<% for(service of services){ %>
+					<% for(service_sub of services){ %>
 					<tr>
-						<th scope="row"><%- service.id %></th>
-						<td><%- service.name %></td>
-						<td><%- service.description %></td>
+						<th scope="row"><%- service_sub.id %></th>
+						<td><%- service_sub.name %></td>
+						<td><%- service_sub.description %></td>
 						<td>
 							<label class="container">
 								<input type="checkbox">
@@ -141,7 +142,7 @@
 						</td>
 						<td>
 							<button type="button" class="btn btn-primary edit-btn" data-toggle="modal" data-target="#editModal"
-								data-service-id="<%- service.id %>">Editar</button>
+								data-service-id="<%- service_sub.id %>">Editar</button>
 							<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">
 								Eliminar
 							</button>
@@ -159,7 +160,9 @@
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="Cadastrar">Cadastrar Submenu de <%- service.name %></h5>
+					<h2><%- service.name %></h2>
+					<br>
+					<h5 class="modal-title" id="Cadastrar">Cadastrar Submenu</h5>
   
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>

@@ -8,7 +8,8 @@ class Services extends Model {
       {
         name: Sequelize.STRING,
         description: Sequelize.TEXT,
-        status: Sequelize.BOOLEAN
+        status: Sequelize.BOOLEAN,
+        service_status_submenu: Sequelize.BOOLEAN
       },
       {
         sequelize,

@@ -86,7 +86,8 @@ export class AdminRenders {
     const { id } = req.params;
     
     const service = await Services.findByPk(id);
-
+    console.log('############# Estou aqui ###############')
+    console.log(service)
     const services = await Subservices.findAll({ where: {
       service_id: id
     }})
