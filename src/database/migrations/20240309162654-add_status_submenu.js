@@ -48,7 +48,6 @@ module.exports = {
       type: Sequelize.BOOLEAN,
       allowNull: true,
     });
-     
   },
 
   async down (queryInterface, Sequelize) {

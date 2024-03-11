@@ -4,6 +4,7 @@ import io from '../config/socketIO';
 
 import { Tickets } from "../models/Tickers";
 import { History } from "../models/history";
+import { Subservices } from '../models/sub_services';
 
 export class TickerControllers {
   async index(request, response) {
@@ -11,11 +12,14 @@ export class TickerControllers {
     return response.status(200);
   }
   async create(request, response) {
-    const { service_id } = request.body;
+    var service_name = null 
+    const { service_id, number_ticker_sub  } = request.body;
+    console.log(service_id, number_ticker_sub)
     const hoje = new Date();
     const inicioDoDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
     const fimDoDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 1);
 
+    
     const existTickers = await Tickets.findOne({
       where: { 
         created_at: {
@@ -24,12 +28,21 @@ export class TickerControllers {
     },
       limit: 1,
     });
-
+   
     const service = await Services.findOne({
       where: {
         id: service_id
       }
     })
+    if(number_ticker_sub) {
+      var service_sub = await Subservices.findOne({
+        where: {
+          id: number_ticker_sub
+        }
+      })
+      service_name = service_sub.name ? service_sub.name : null
+    }
+   
 
     if(!service) {
       return response.status(200).json({
@@ -41,24 +54,28 @@ export class TickerControllers {
       await Tickets.truncate()
     }
 
+    console.log('OK', number_ticker_sub == 0 ? null : number_ticker_sub)
     var result = await Tickets.count({
       where: { 
         service_id,
+        service_sub: number_ticker_sub == 0 ? null : number_ticker_sub,
         created_at: {
           [Op.between]: [inicioDoDia, fimDoDia]
         }
     },
       limit: 1,
     });
-
+    console.log('Tá bem' + result)
     
-    const ticker = await Tickets.create({
-      service_id,
-      ticket_number: result + 1,
-   });
+     const ticker = await Tickets.create({
+       service_id,
+       service_sub: number_ticker_sub == 0 ? null : number_ticker_sub,
+       ticket_number: result + 1,
+    });
 
    await History.create({
     user_id: ticker.user_id,
+    service_sub: number_ticker_sub == 0 ? null : number_ticker_sub,
     service_id: ticker.service_id,
     counter_id: ticker.counter_id,
   });
@@ -76,14 +93,15 @@ export class TickerControllers {
     }]
   });
 
-  io.getIO().emit('now', {
-    id: ticker.service_id,
-    count
-  });
+    io.getIO().emit('now', {
+      id: ticker.service_id,
+      service_sub_id: ticker.service_sub,
+      count
+    });
    
 
     return response.json({
-      ticker, service: service.name
+      ticker, service: service.name, service_name
     })
   }
   async create_sub(request, response) {

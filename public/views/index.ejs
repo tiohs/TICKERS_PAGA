@@ -126,10 +126,11 @@
         <% var x = 0; %>
         <% for(submenu of subservices){ %>
           <% x++; %>
-        <button class="submenu-button" data-id="<%- submenu.id %>"
-          data-name="<%- submenu.name %>" data-service_id="<%- submenu.service_id %>"><%- x; %> - <%- submenu.name %></button>
+          <% if(submenu.status) { %>
+            <button class="submenu-button" data-id="<%- submenu.id %>"
+              data-name="<%- submenu.name %>" data-service_id="<%- submenu.service_id %>"><%- x; %> - <%- submenu.name %></button>
         <% } %>
-
+        <% } %>
       </div>
       <div class="modal-footer">
         <!-- <button type="button" class="btn btn-secondary close-btn" style="color: #fff; background: green;"
@@ -153,7 +154,7 @@
   const submenuButtons = document.querySelectorAll('.submenu-button');
 
   const postTicketData = async (number_tickers, number_ticker_sub = null) => {
-    const service = await axios.post('http://172.17.1.10:3000/api/ticker', {
+    const service = await axios.post('http://172.17.1.14:3000/api/ticker', {
       service_id: Number(number_tickers),
       number_ticker_sub: Number(number_ticker_sub)
     }, {
@@ -174,10 +175,11 @@
     const minutos = data.getMinutes().toString().padStart(2, '0');
     const dataFomatada = `${dia}/${mes}/${ano} ás ${hora}:${minutos}`;
 
-    const state = await axios.post('http://172.17.1.11:4000/print', {
+    const state = await axios.post('http://172.17.1.90:4000/print', {
       number_id: Number(service.data.ticker.ticket_number),
       services_tickers: service.data.service,
-      data: dataFomatada
+      data: dataFomatada,
+      service_sub: service.data.service_name ? service.data.service_name : null
     }, {
 
       headers: {

@@ -215,9 +215,9 @@
   </script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  const audio = new Audio('http://172.17.1.10:3000/audio/ascend.mp3'); 
+  const audio = new Audio('http://172.17.1.14:3000/audio/ascend.mp3'); 
   document.addEventListener('DOMContentLoaded', function() {
-  var socket = io.connect('http://172.17.1.10:3000');
+  var socket = io.connect('http://172.17.1.14:3000');
   var actual;
   socket.on('ok', (msg) => {
     console.log(msg)

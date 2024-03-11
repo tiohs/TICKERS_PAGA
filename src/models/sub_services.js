@@ -7,7 +7,8 @@ class Subservices extends Model {
         service_id: Sequelize.INTEGER,
         name: Sequelize.STRING,
         description: Sequelize.TEXT,
-        status: Sequelize.BOOLEAN
+        status: Sequelize.BOOLEAN,
+        
       },
       {
         sequelize,
@@ -18,6 +19,8 @@ class Subservices extends Model {
   }
   static associate(models) {
     this.belongsTo(models.Services, { foreignKey: 'service_id' });
+
+
   }
 }
 

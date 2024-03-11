@@ -8,6 +8,7 @@ class History extends Model {
         service_id: Sequelize.INTEGER,
         counter_id: Sequelize.INTEGER,
         ticket_number: Sequelize.INTEGER,
+        service_sub: Sequelize.INTEGER,
       },
       {
         sequelize,
@@ -19,6 +20,7 @@ class History extends Model {
     this.belongsTo(models.Users, { foreignKey: 'user_id' });
     this.belongsTo(models.Services, { foreignKey: 'service_id' });
     this.belongsTo(models.Counters, { foreignKey: 'counter_id' });
+    this.belongsTo(models.Subservices, { foreignKey: 'service_sub' });
   }
 }
 

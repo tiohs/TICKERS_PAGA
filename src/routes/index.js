@@ -21,6 +21,7 @@ const servicesSubController = new ServicesSubController()
 
 const routes = new Router();
 routes.post('/service/updated/:id', servicesController.updated);
+routes.post('/service_sub/updated/:id', servicesSubController.updated);
 
 routes.post('/api/ticker', tickerControllers.create);
 routes.put('/api/ticker/:id', tickerControllers.update);
@@ -29,12 +30,10 @@ routes.get('/login', interceptorLogon, authControllers.getLogin);
 routes.post('/login', authControllers.postCreateUser);
 routes.get('/',  indexRenders.indexTela);
 routes.get('/call',  indexRenders.screencall);
-
 routes.use(interceptorLogin);
 routes.post('/users', usersController.create);
 routes.get('/users/delete/:id', usersController.delete); 
 routes.use('/admin', adminRoutesRender);
-
 routes.post('/service', servicesController.create);
 routes.post('/counter', countersController.create);
 routes.post('/service_sub', servicesSubController.create);

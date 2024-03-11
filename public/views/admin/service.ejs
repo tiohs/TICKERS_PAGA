@@ -268,7 +268,7 @@
 				item.addEventListener("click", function() {
             // Obtendo o estado atual do checkbox
             var isChecked = this.checked;   
-            axios.post(`http://172.22.116.33:3000/service/updated/${item.dataset.id}`, 
+            axios.post(`http://172.17.1.14:3000/service/updated/${item.dataset.id}`, 
 						{ 
 							status: isChecked 
 						})
@@ -285,7 +285,7 @@
 				item.addEventListener("click", function() {
             // Obtendo o estado atual do checkbox
             var isChecked = this.checked;   
-            axios.post(`http://172.22.116.33:3000/service/updated/${item.dataset.id}`, 
+            axios.post(`http://172.17.1.14:3000/service/updated/${item.dataset.id}`, 
 						{ 
 							service_status_submenu: isChecked 
 						})

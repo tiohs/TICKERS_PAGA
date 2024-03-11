@@ -186,7 +186,7 @@
   <script src="../js/axios.js"></script>
   <script src="/socket.io/socket.io.js"></script>
   <script>
-    var socket = io.connect('http://172.17.1.10:3000');
+    var socket = io.connect('http://172.17.1.14:3000');
     const ticketId = document.querySelectorAll('.ticket-id');
     const ticketTipo = document.querySelectorAll('.ticket-tipo');
     const ticketData = document.querySelectorAll('.ticket-data');
@@ -195,7 +195,7 @@
     const notificar = document.querySelector('#notificar');
        
     const currentButtons = document.querySelectorAll('.current-button');
-    const audio = new Audio('http://172.17.1.10:3000/audio/ascend.mp3');
+    const audio = new Audio('http://172.17.1.14:3000/audio/ascend.mp3');
     var actual;
   
     
@@ -241,7 +241,7 @@
       btn.addEventListener('click', async () => {
         const btnId = btn.id;
         if(btnId.includes('btn')) {
-          const response = await axios.put(`http://172.17.1.10:3000/api/ticker/${btnId.split('-')[1]}`, {
+          const response = await axios.put(`http://172.17.1.14:3000/api/ticker/${btnId.split('-')[1]}`, {
             user_id: Number('<%= user_id %>'),
             counter_id: Number('<%= counter %>')
           });
