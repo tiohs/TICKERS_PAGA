@@ -255,7 +255,7 @@
 				item.addEventListener("click", function() {
             // Obtendo o estado atual do checkbox
             var isChecked = this.checked;   
-            axios.post(`http://172.17.1.14:3000/service_sub/updated/${item.dataset.id}`, 
+            axios.post(`http://172.17.1.19:3000/service_sub/updated/${item.dataset.id}`, 
 						{ 
 							status: isChecked 
 						})

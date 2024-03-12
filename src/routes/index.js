@@ -22,9 +22,11 @@ const servicesSubController = new ServicesSubController()
 const routes = new Router();
 routes.post('/service/updated/:id', servicesController.updated);
 routes.post('/service_sub/updated/:id', servicesSubController.updated);
+routes.get('/service_sub/:id', servicesSubController.index);
 
 routes.post('/api/ticker', tickerControllers.create);
 routes.put('/api/ticker/:id', tickerControllers.update);
+routes.put('/api/ticker_sub/:id', tickerControllers.updateSub);
 routes.get('/api/ticker/notification', tickerControllers.index)
 routes.get('/login', interceptorLogon, authControllers.getLogin);
 routes.post('/login', authControllers.postCreateUser);

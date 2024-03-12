@@ -215,9 +215,9 @@
   </script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-  const audio = new Audio('http://172.17.1.14:3000/audio/ascend.mp3'); 
+  const audio = new Audio('http://172.17.1.19:3000/audio/ascend.mp3'); 
   document.addEventListener('DOMContentLoaded', function() {
-  var socket = io.connect('http://172.17.1.14:3000');
+  var socket = io.connect('http://localhost:3000');
   var actual;
   socket.on('ok', (msg) => {
     console.log(msg)
@@ -262,9 +262,11 @@
   })});
 // Função que lê os dados do ticket usando o SpeechSynthesisVoice
 const speakTicketData = (ticket) => {
+  console.log(ticket);
       playAudio();
       console.log(ticket.ticket_number)
-      const message = `Senha, ${ticket.ticket_number}, Serviço, ${ticket.Service.name}, Balcão, ${ticket.counter_id}`;
+      const message = ticket.service_sub !== null ? `Senha ${ticket.ticket_number}, Serviço ${ticket.Service.name}, Dr. ${ticket.Subservice.name}, Balcão ${ticket.counter_id}` : `Senha ${ticket.ticket_number}, Serviço ${ticket.Service.name}, Balcão ${ticket.counter_id}`;
+
     
       const speak = new SpeechSynthesisUtterance(message);
         speak.lang = 'pt';
