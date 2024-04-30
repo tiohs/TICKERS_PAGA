@@ -149,12 +149,17 @@
 </body>
 <script src="./js/axios.js"></script>
 <script>
+  (async () => {
+    const result = await axios.post('http://localhost:81/Sigro_desenvolvimento/utente/showAgendaProfissional');
+    console.log(result)
+  })()
+  
   // Seletor para todos os botões de serviço
   const serviceButtons = document.querySelectorAll('.service-button');
   const submenuButtons = document.querySelectorAll('.submenu-button');
 
   const postTicketData = async (number_tickers, number_ticker_sub = null) => {
-    const service = await axios.post('http://172.17.1.19:3000/api/ticker', {
+    const service = await axios.post('http://172.17.1.222:3000/api/ticker', {
       service_id: Number(number_tickers),
       number_ticker_sub: Number(number_ticker_sub)
     }, {
