@@ -8,6 +8,12 @@ export class IndexRenders {
     const subservices = await Subservices.findAll();
     return res.render('index', { services, subservices });
   }
+
+  async indexTelaConfirmacao (req, res) {
+    const services = await Services.findAll();
+    const subservices = await Subservices.findAll();
+    return res.render('telaindex', { services, subservices });
+  }
   async ticket(req, res){
     const counter = req.session.data.counter;
     const user = req.session.data.user.id;

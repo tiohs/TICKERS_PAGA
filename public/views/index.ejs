@@ -13,6 +13,9 @@
     button {
       font-size: 2.5rem;
     }
+    a {
+      font-size: 2.5rem;
+    }
 
     .modal {
       display: none;
@@ -74,6 +77,22 @@
       align-items: center;
       flex-direction: column;
     }
+    #douctores {
+     
+     height: 80vh; /* 80% da altura da viewport */
+     width: 100%; /* 80% da largura do elemento pai */
+     overflow-y: auto;
+     margin: 0 auto;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     scrollbar-width: none; /* Para Firefox */
+     scrollbar-color: transparent; /* Para Firefox */
+   }
+ 
+   #douctores::-webkit-scrollbar { /* Para Chrome, Safari e Edge */
+     display: none;
+   }
   </style>
 </head>
 
@@ -86,16 +105,21 @@
       <div class="">
         <!-- <h2>Serviços IACC</h2> -->
       </div>
+    <div id="douctores">
+      <a  href="/TelaConfirma" style="text-align: center;">0 - CONFIRMAÇÃO DE CONSULTA</a>
       <% for(service of services){ %>
         <%if(!!service.status){%>
           <button class="service-button" data-id="<%- service.id %>" data-sub="<%- service.service_status_submenu %>" data-name="<%- service.name %>"><%-
                   service.id %> - <%- service.name %></button>
           <%}%>
       <% } %>
+      
+    </div>
+     
     </main>
     <footer>
       <h3 style="text-align: center;">
-        Mhbinda-Tickets - &copy; copyright-Muhende <%- `${new Date().getFullYear()}` %>
+        RVG-Tickets - &copy; copyright-Muhende <%- `${new Date().getFullYear()}` %>
       </h3>
     </footer>
 
@@ -136,7 +160,7 @@
         <!-- <button type="button" class="btn btn-secondary close-btn" style="color: #fff; background: green;"
           data-dismiss="modal">Sair</button> -->
         <h3>
-          Mhbinda-Tickets - &copy; copyright-Muhende <%- `${new Date().getFullYear()}` %>
+          RVG - Tickets - &copy; copyright-Muhende <%- `${new Date().getFullYear()}` %>
         </h3>
       </div>
     </div>

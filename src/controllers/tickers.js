@@ -14,7 +14,7 @@ export class TickerControllers {
   async create(request, response) {
     var service_name = null 
     const { service_id, number_ticker_sub  } = request.body;
-    console.log(service_id, number_ticker_sub)
+    
     const hoje = new Date();
     const inicioDoDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
     const fimDoDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 1);
@@ -119,6 +119,114 @@ export class TickerControllers {
       count_sub: count_sub
     });
     
+   
+
+    return response.json({
+      ticker, service: service.name, service_name
+    })
+  }
+
+  async createTickers(request, response) {
+    var service_name = null 
+    const { service_id, number_ticker_sub  } = request.body;
+    
+    const hoje = new Date();
+    const inicioDoDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
+    const fimDoDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 1);
+    var count_sub = null;
+    
+    const existTickers = await Tickets.findOne({
+      where: { 
+        created_at: {
+          [Op.between]: [inicioDoDia, fimDoDia]
+        }
+    },
+      limit: 1,
+    });
+   
+    const service = await Services.findOne({
+      where: {
+        id: service_id
+      }
+    })
+    
+    if(number_ticker_sub) {
+      var service_sub = await Subservices.findOne({
+        where: {
+          id: number_ticker_sub
+        }
+      })
+
+      count_sub = await Tickets.count({
+        where: { 
+          service_id,
+          user_id: null,
+          service_sub: number_ticker_sub,
+          created_at: {
+            [Op.between]: [inicioDoDia, fimDoDia]
+          }
+        },
+        include: [{
+            model: Services
+        }]
+      });
+
+      service_name = service_sub.name ? service_sub.name : null;
+    }
+   
+
+    if(!service) {
+      return response.status(200).json({
+        error: 'Service not exist !'
+      })
+    }
+
+    if(!existTickers) {
+      await Tickets.truncate()
+    }
+
+    console.log('OK', number_ticker_sub == 0 ? null : number_ticker_sub)
+    var result = await Tickets.count({
+      where: { 
+        service_id,
+        service_sub: number_ticker_sub == 0 ? null : number_ticker_sub,
+        created_at: {
+          [Op.between]: [inicioDoDia, fimDoDia]
+        }
+    },
+      limit: 1,
+    });
+    console.log('Tá bem' + result)
+    
+     const ticker = await Tickets.create({
+       service_id,
+       service_sub: number_ticker_sub == 0 ? null : number_ticker_sub,
+       ticket_number: result + 1,
+    });
+
+   await History.create({
+    user_id: ticker.user_id,
+    service_sub: number_ticker_sub == 0 ? null : number_ticker_sub,
+    service_id: ticker.service_id,
+    counter_id: ticker.counter_id,
+  });
+
+   const count = await Tickets.count({
+    where: { 
+      service_id,
+      user_id: null,
+      created_at: {
+        [Op.between]: [inicioDoDia, fimDoDia]
+      }
+    },
+    include: [{
+        model: Services
+    }]
+  });
+
+   
+
+
    
 
     return response.json({

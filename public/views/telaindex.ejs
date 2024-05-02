@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IACC tickect</title>
+  <link rel="stylesheet" href="css/bootstrap.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    button {
+      font-size: 2.5rem;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow: auto;
+      background-color: #fff;
+    }
+
+    .modal-dialog {
+      max-width: none;
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    .modal-content {
+      height: 100%;
+      border-radius: 0;
+      border: none;
+      box-shadow: none;
+      background-color: transparent;
+    }
+
+    .modal-body {
+      padding: 1rem;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: center;
+      /* Centraliza horizontalmente */
+      align-items: center;
+      /* Centraliza verticalmente */
+      padding: 0.75rem;
+      border-top: 1px solid #dee2e6;
+      border-bottom-right-radius: calc(0.3rem - 1px);
+      border-bottom-left-radius: calc(0.3rem - 1px);
+    }
+
+    .modal-header>div {
+      flex: 1;
+      /* Distribui o espaço igualmente entre as divs */
+      display: flex;
+      justify-content: space-between;
+      /* Espaça as divs internamente */
+      align-items: center;
+      /* Alinha os itens verticalmente no centro */
+    }
+    .modal-body {
+      margin: 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+    #douctores {
+     
+      height: 80vh; /* 80% da altura da viewport */
+      width: 100%; /* 80% da largura do elemento pai */
+      overflow-y: auto;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      scrollbar-width: none; /* Para Firefox */
+      scrollbar-color: transparent; /* Para Firefox */
+    }
+  
+    #douctores::-webkit-scrollbar { /* Para Chrome, Safari e Edge */
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <header style="margin: 1rem;">
+      <img src="img/logo.png" alt="IACC" width="250px" height="auto" />
+    </header>
+    <main>
+      <div style="display: flex; align-items: center; justify-content: center; margin: 1rem;" >
+        <h1>Serviços IACC</h1>
+      </div>
+      <div id="douctores">
+        
+      </div>
+      <div style="display: flex; align-items: center; justify-content: center; margin: 1rem;">
+        <a onclick="history.back()" style="width: 200px; text-align: center; color: #fff;">Volta</a>
+      </div>
+    
+    </main>
+    <footer>
+      <h3 style="text-align: center;">
+        Mhbinda-Tickets - &copy; copyright-Muhende <%- `${new Date().getFullYear()}` %>
+      </h3>
+    </footer>
+
+      <!-- modal -->
+  <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <div>
+          <img src="img/logo.png" alt="IACC" width="100px" height="auto" />
+        </div>
+
+        <div>
+          <h5 class="modal-title" style="text-align: center;" id="exampleModalLabel"><span
+              id="serviceIdSpan" style="font-size: 2rem;"></span></h5>
+        </div>
+        <div>
+          <button type="button" class="close btn btn-secondary" style="color: #fff; background: green;"
+          data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">SAIR &times;</span>
+        </button>
+        </div>
+      </div>
+      <div class="modal-body" style="margin: 0 auto;">
+        <input type="hidden" id="serviceIdInput">
+        
+        <div class="modal-body" id="utente">
+         
+        </div>
+            
+   
+      </div>
+      <div class="modal-footer">
+        <!-- <button type="button" class="btn btn-secondary close-btn" style="color: #fff; background: green;"
+          data-dismiss="modal">Sair</button> -->
+        <h3>
+          RVG - Tickets - &copy; copyright-Muhende <%- `${new Date().getFullYear()}` %>
+        </h3>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+
+  </div>
+
+</body>
+<script src="./js/axios.js"></script>
+<script>
+  const listDoutores = document.querySelector('#douctores');
+  const listUtente = document.querySelector('#utente');
+  var serviceId;
+  async function init() {
+    const result = await axios.post('http://localhost:81/api-decript/index.php', {
+      chaves_para_descriptografar :  'nome_utente,nome_funcionario',
+      consulta : `SELECT rcu.id_rcu, rcu.id_agenda, f.id_funcionario, f.nome_funcionario, ut.id_utente, ut.nome_utente
+              FROM rcu
+              JOIN agenda ON rcu.id_agenda = agenda.id_agenda
+              JOIN profissional_clinico ON agenda.id_profissional_clinico = profissional_clinico.id_profissional_clinico
+              JOIN funcionario as f ON profissional_clinico.id_funcionario = f.id_funcionario
+              JOIN ficha as fi ON rcu.id_ficha = fi.id_ficha
+              JOIN utente as ut ON ut.id_utente = fi.id_utente
+              WHERE rcu.estado_rcu = 'AGENDAMENTO'
+              AND DATE(rcu.created_at) = CURDATE()
+              AND rcu.confirmacao_prioridade = 0;`
+    });
+    
+    let uniqueData = result.data.filter((v,i,a)=>a.findIndex(t=>(t.id_funcionario === v.id_funcionario))===i);
+
+    uniqueData.forEach(element => {  
+      listDoutores.innerHTML += `  <button class="service-button" data-id="${element.id_funcionario}" data-sub="true" data-name="${element.nome_funcionario}">${element.nome_funcionario}</button>`;
+    });
+
+    let uniqueDataUtente = result.data.filter((v,i,a)=>a.findIndex(t=>(t.id_utente === v.id_utente && t.id_agenda === v.id_agenda))===i);
+
+    uniqueDataUtente.forEach(element => {  
+      listUtente.innerHTML += `<button class="submenu-button" data-id="${element.id_rcu}" data-name="${element.nome_utente}" style="width: 100%;" data-service_id="${element.id_funcionario}">${element.nome_utente}</button>`;
+    });
+
+    buttonService();
+    document.querySelector('.modal-content .close').addEventListener('click', (event) => {
+    document.getElementById('exampleModal').style.display = 'none';
+  });
+  }
+
+  function buttonService() {
+  const serviceButtons = document.querySelectorAll('.service-button');
+  const submenuButtons = document.querySelectorAll('.submenu-button');
+
+      serviceButtons.forEach(button => {
+      button.addEventListener('click', (event) => {
+          serviceId = button.dataset.id;
+          // Atualize o valor do input hidden e do span na modal
+          document.getElementById('serviceIdInput').value = serviceId;
+          document.getElementById('serviceIdSpan').textContent = button.dataset.name;
+          // Exiba a modal
+          document.getElementById('exampleModal').style.display = 'block';
+          removeSubMenu(serviceId);
+          return;
+      });
+    });
+
+      submenuButtons.forEach(button => {
+        button.addEventListener('click', async (event) => {
+          const submenuId = button.dataset.id;
+          // const serviceId = document.getElementById('serviceIdInput').value;
+          // console.log('serviço: ' + serviceId, ' Submenu:' + submenuId);
+          postTicketData(serviceId);
+          const result = await axios.post('http://localhost:81/api-decript/index.php', {
+                chaves_para_descriptografar :  '',
+                consulta : `select max(confirmacao_prioridade) + 1 as cont from rcu;`
+              });
+            await axios.post('http://localhost:81/api-decript/index.php', {
+                  chaves_para_descriptografar :  '',
+                  consulta : `update rcu set 
+                  confirmacao_prioridade = ${result.data[0].cont}
+                  where id_rcu = ${submenuId}`
+            });
+            history.back();
+        });
+      });
+  }
+
+  function removeSubMenu (service_id){
+    document.querySelectorAll('.submenu-button').forEach(item => {
+      console.log(item.dataset.service_id)
+      if (Number(item.dataset.service_id) !== Number(service_id)){
+        return item.style.display = 'none';
+      } 
+      return item.style.display = 'block';
+    })
+  }
+
+  async function postTicketData(number_ticker_sub) {
+    console.log(number_ticker_sub)
+    // const service = await axios.post('http://172.17.1.222:3000/api/create-ticker', {
+    //   number_ticker_sub: Number(number_ticker_sub)
+    // }, {
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // });
+
+    // if (service.data.hasOwnProperty('error')) {
+    //   return alert(service.data.error)
+    // }
+    // const data = new Date();
+    // const dia = data.getDate().toString().padStart(1, '0');
+    // const mes = (data.getMonth() + 1).toString().padStart(1, '0');
+    // const ano = data.getFullYear();
+    // const hora = data.getHours().toString().padStart(2, '0');
+    // const minutos = data.getMinutes().toString().padStart(2, '0');
+    // const dataFomatada = `${dia}/${mes}/${ano} ás ${hora}:${minutos}`;
+
+    // const state = await axios.post('http://172.17.1.290:4000/print', {
+    //   number_id: Number(service.data.ticker.ticket_number),
+    //   services_tickers: service.data.service,
+    //   data: dataFomatada,
+    //   service_sub: service.data.service_name ? service.data.service_name : null
+    // }, {
+
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // });
+  }
+  init()
+
+</script>
+
+</html>

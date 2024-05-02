@@ -44,6 +44,27 @@ button {
     cursor: pointer;
     background: #27701e;
     border: none;
+    width: 100%;
+    border-radius: 0.4em;
+    text-transform: uppercase;
+    font-size: 1.4em;
+    font-family: "Work Sans", sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    /* mix-blend-mode: color-dodge; */
+    perspective: 500px;
+    transform-style: preserve-3d;
+    color: #fff;
+}
+a {
+    display: block;
+    position: relative;
+    margin: 0.5em 0;
+    padding: 0.8em 2.2em;
+    width: 100%;
+    cursor: pointer;
+    background: #27701e;
+    border: none;
     border-radius: 0.4em;
     text-transform: uppercase;
     font-size: 1.4em;
@@ -91,6 +112,51 @@ button:hover:before {
 button:hover:after {
     --z: -0.06;
     animation: translateWobble 2.2s ease forwards;
+}
+a:before, a:after {
+    --z: 0px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    content: '';
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    mix-blend-mode: inherit;
+    border-radius: inherit;
+    transform-style: preserve-3d;
+    transform: translate3d(calc(var(--z) * 0px), calc(var(--z) * 0px), calc(var(--z) * 0px));
+}
+a span {
+    mix-blend-mode: none;
+    display: block;
+}
+a:after {
+    background-color: #5d00ff;
+}
+a:before {
+    background-color: #ff1731;
+}
+a:hover {
+    color: white; /* Cor do texto quando o mouse passa sobre o botão */
+  
+    text-decoration: none; /* Remove o sublinhado do link */
+    transition: background 0.3s 0.1s;
+}
+a:hover:before {
+    --z: 0.04;
+    animation: translateWobble 2.2s ease forwards;
+    color: white; /* Cor do texto quando o mouse passa sobre o botão */
+  
+    text-decoration: none; /* Remove o sublinhado do link */
+}
+a:hover:after {
+    --z: -0.06;
+    animation: translateWobble 2.2s ease forwards;
+    color: white; /* Cor do texto quando o mouse passa sobre o botão */
+  
+    text-decoration: none; /* Remove o sublinhado do link */
 }
 
 h2{
