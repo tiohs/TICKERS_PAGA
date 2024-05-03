@@ -128,8 +128,9 @@ export class TickerControllers {
 
   async createTickers(request, response) {
     var service_name = null 
-    const { service_id, number_ticker_sub  } = request.body;
+    var { number_ticker_sub  } = request.body;
     
+    const service_id = 1;
     const hoje = new Date();
     const inicioDoDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate());
     const fimDoDia = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + 1);
@@ -153,10 +154,11 @@ export class TickerControllers {
     if(number_ticker_sub) {
       var service_sub = await Subservices.findOne({
         where: {
-          id: number_ticker_sub
+          id_sigro: number_ticker_sub
         }
-      })
-
+      });
+      number_ticker_sub = service_sub.id;
+      
       count_sub = await Tickets.count({
         where: { 
           service_id,
@@ -224,14 +226,10 @@ export class TickerControllers {
     }]
   });
 
-   
-
-
-   
-
     return response.json({
       ticker, service: service.name, service_name
     })
+    
   }
  
   async update(request, response) {

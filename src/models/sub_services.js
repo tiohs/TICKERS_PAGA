@@ -8,7 +8,7 @@ class Subservices extends Model {
         name: Sequelize.STRING,
         description: Sequelize.TEXT,
         status: Sequelize.BOOLEAN,
-        
+        id_sigro: Sequelize.INTEGER,
       },
       {
         sequelize,

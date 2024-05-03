@@ -222,7 +222,7 @@
           const submenuId = button.dataset.id;
           // const serviceId = document.getElementById('serviceIdInput').value;
           // console.log('serviço: ' + serviceId, ' Submenu:' + submenuId);
-          postTicketData(serviceId);
+          await postTicketData(serviceId);
           const result = await axios.post('http://localhost:81/api-decript/index.php', {
                 chaves_para_descriptografar :  '',
                 consulta : `select max(confirmacao_prioridade) + 1 as cont from rcu;`
@@ -249,37 +249,37 @@
   }
 
   async function postTicketData(number_ticker_sub) {
-    console.log(number_ticker_sub)
-    // const service = await axios.post('http://172.17.1.222:3000/api/create-ticker', {
-    //   number_ticker_sub: Number(number_ticker_sub)
-    // }, {
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   }
-    // });
+ 
+    const service = await axios.post('http://172.17.1.222:3000/api/create-ticker', {
+      number_ticker_sub: Number(number_ticker_sub)
+    }, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
 
-    // if (service.data.hasOwnProperty('error')) {
-    //   return alert(service.data.error)
-    // }
-    // const data = new Date();
-    // const dia = data.getDate().toString().padStart(1, '0');
-    // const mes = (data.getMonth() + 1).toString().padStart(1, '0');
-    // const ano = data.getFullYear();
-    // const hora = data.getHours().toString().padStart(2, '0');
-    // const minutos = data.getMinutes().toString().padStart(2, '0');
-    // const dataFomatada = `${dia}/${mes}/${ano} ás ${hora}:${minutos}`;
+    if (service.data.hasOwnProperty('error')) {
+      return alert(service.data.error)
+    }
+    const data = new Date();
+    const dia = data.getDate().toString().padStart(1, '0');
+    const mes = (data.getMonth() + 1).toString().padStart(1, '0');
+    const ano = data.getFullYear();
+    const hora = data.getHours().toString().padStart(2, '0');
+    const minutos = data.getMinutes().toString().padStart(2, '0');
+    const dataFomatada = `${dia}/${mes}/${ano} ás ${hora}:${minutos}`;
 
-    // const state = await axios.post('http://172.17.1.290:4000/print', {
-    //   number_id: Number(service.data.ticker.ticket_number),
-    //   services_tickers: service.data.service,
-    //   data: dataFomatada,
-    //   service_sub: service.data.service_name ? service.data.service_name : null
-    // }, {
+    const state = await axios.post('http://172.17.1.90:7000/print', {
+      number_id: Number(service.data.ticker.ticket_number),
+      services_tickers: service.data.service,
+      data: dataFomatada,
+      service_sub: service.data.service_name ? service.data.service_name : null
+    }, {
 
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   }
-    // });
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
   }
   init()
 
